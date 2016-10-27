@@ -1,5 +1,9 @@
 
 SpaceShip bob;
+boolean isAccel = false;
+boolean isRotatingLeft = false;
+boolean isRotatingRight = false;
+boolean isHyperSpace = false;
 public void setup() 
 {
   size(500, 500);
@@ -8,7 +12,43 @@ public void setup()
 public void draw() 
 {
   background(0);
-  bob.show();
+  if(isHyperSpace == false) {bob.show();}
+  bob.move();
+  if(isAccel == true) {
+    bob.accelerate(0.1);
+  }
+  if(isRotatingLeft == true) {bob.rotate(-5);}
+  if(isRotatingRight == true) {bob.rotate(5);}
+  if(isHyperSpace == true)
+  {
+    bob.setX((int)(Math.random() * 500));
+    bob.setY((int)(Math.random() * 500));
+    bob.setPointDirection((int)(Math.random() * 361));
+    bob.setDirectionX(0);
+    bob.setDirectionY(0);
+
+  }
+}
+public void keyPressed()
+{
+  if(key == 'w') {isAccel = true;}
+  if(key == 'a') {isRotatingLeft = true;}
+  if(key == 'd') {isRotatingRight = true;}
+  if(key == 'e') {isHyperSpace = true;}
+
+}
+public void keyReleased()
+{
+  if(key == 'w') {isAccel = false;}
+  if(key == 'a') {isRotatingLeft = false;}
+  if(key == 'd') {isRotatingRight = false;}
+  if(key == 'e') {isHyperSpace = false;}
+}
+public class stars
+{
+  public stars(){
+
+  }
 }
 class SpaceShip extends Floater  
 {   
@@ -41,6 +81,7 @@ class SpaceShip extends Floater
     public double getDirectionY() {return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection = degrees;}
     public double getPointDirection() {return myPointDirection;}
+
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
@@ -66,7 +107,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   public void accelerate (double dAmount)   
   {          
     //convert the current direction the floater is pointing to radians    
-    double dRadians =myPointDirection*(Math.PI/180);     
+    double dRadians = myPointDirection*(Math.PI/180);     
     //change coordinates of direction of travel    
     myDirectionX += ((dAmount) * Math.cos(dRadians));    
     myDirectionY += ((dAmount) * Math.sin(dRadians));       
