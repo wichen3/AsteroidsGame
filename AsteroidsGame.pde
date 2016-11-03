@@ -1,5 +1,6 @@
 
 SpaceShip bob;
+stars bling;
 boolean isAccel = false;
 boolean isRotatingLeft = false;
 boolean isRotatingRight = false;
@@ -8,12 +9,14 @@ public void setup()
 {
   size(500, 500);
   bob = new SpaceShip();
+  bling = new stars();
 }
 public void draw() 
 {
   background(0);
-  if(isHyperSpace == false) {bob.show();}
+  bling.show();
   bob.move();
+  if(isHyperSpace == false) {bob.show();}
   if(isAccel == true) {
     bob.accelerate(0.1);
   }
@@ -26,7 +29,6 @@ public void draw()
     bob.setPointDirection((int)(Math.random() * 361));
     bob.setDirectionX(0);
     bob.setDirectionY(0);
-
   }
 }
 public void keyPressed()
@@ -46,9 +48,35 @@ public void keyReleased()
 }
 public class stars
 {
-  public stars(){
-
+  int x[];
+  int y[];
+  int size[];
+  int rgb[];
+  public stars()
+  {
+    x = new int[300];
+    y = new int[300];
+    size = new int[300];
+    rgb = new int[300];
+    for(int i = 0; i < 300; i++)
+    {
+      x[i] = (int)(Math.random() * 500);
+      y[i] = (int)(Math.random() * 500);
+      size[i] = (int)(Math.random() * 4) + 1;
+      rgb[i] = color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
+    }
   }
+  public void show()
+  {
+    for(int i = 0; i< 300; i++)
+    {
+      stroke(rgb[i]);
+      strokeWeight(size[i]);
+      point(x[i],y[i]);
+    }
+    strokeWeight(1);
+  }
+
 }
 class SpaceShip extends Floater  
 {   
@@ -123,6 +151,14 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;     
 
+    //Fixes bug where ship goes to fast
+    if(myDirectionX >= 500 || myDirectionY >= 500)
+    {
+      myDirectionX = 5;;
+      myDirectionY = 5;
+      myCenterX = 250;
+      myCenterY = 250;
+    }
     //wrap around screen    
     if(myCenterX >width)
     {     
