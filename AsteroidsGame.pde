@@ -5,11 +5,17 @@ boolean isAccel = false;
 boolean isRotatingLeft = false;
 boolean isRotatingRight = false;
 boolean isHyperSpace = false;
+Asteroid [] rocks;
 public void setup() 
 {
   size(500, 500);
   bob = new SpaceShip();
   bling = new stars();
+  rocks = new Asteroid[7];
+  for(int i = 0; i < rocks.length; i++)
+  {
+    rocks[i] = new Asteroid();
+  }
 }
 public void draw() 
 {
@@ -18,7 +24,7 @@ public void draw()
   bob.move();
   if(isHyperSpace == false) {bob.show();}
   if(isAccel == true) {
-    bob.accelerate(0.1);
+    bob.accelerate(0.07);
   }
   if(isRotatingLeft == true) {bob.rotate(-5);}
   if(isRotatingRight == true) {bob.rotate(5);}
@@ -29,6 +35,11 @@ public void draw()
     bob.setPointDirection((int)(Math.random() * 361));
     bob.setDirectionX(0);
     bob.setDirectionY(0);
+  }
+  for(int nI = 0; nI < rocks.length; nI++)
+  {
+    rocks[nI].show();
+    rocks[nI].move();
   }
 }
 public void keyPressed()
@@ -76,7 +87,6 @@ public class stars
     }
     strokeWeight(1);
   }
-
 }
 class SpaceShip extends Floater  
 {   
@@ -92,7 +102,7 @@ class SpaceShip extends Floater
       yCorners[2] = 8;
       xCorners[3] = -2;
       yCorners[3] =  0;
-      myColor = color(255);
+      myColor = color(0,255,0);
       myCenterX = 250;
       myCenterY = 250;
       myDirectionX = 0;
@@ -109,7 +119,69 @@ class SpaceShip extends Floater
     public double getDirectionY() {return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection = degrees;}
     public double getPointDirection() {return myPointDirection;}
+}
+class Asteroid extends Floater
+{
+  protected int rotSpeed;
+  public Asteroid()
+  {
+    corners = 6;
+    xCorners = new int[corners];
+    yCorners = new int[corners];
+    xCorners[0] = -11;
+    yCorners[0] = -8;
+    xCorners[1] = 7;
+    yCorners[1] = -8;
+    xCorners[2] = 13;
+    yCorners[2] = 0;
+    xCorners[3] = 6;
+    yCorners[3] = 10;
+    xCorners[4] = -11;
+    yCorners[4] = 8;
+    xCorners[5] = -5;
+    yCorners[5] = 0;
+    myColor = color(255);
+    myCenterX = (int)(Math.random() * width) + 1;
+    myCenterY = (int)(Math.random() * height) + 1;
+    myDirectionX = (int)(Math.random() * 5) - 2;
+    myDirectionY = (int)(Math.random() * 5) - 2;
+    rotSpeed = (int)(Math.random() * 3) + 1;
+  }
+  public void move()
+  {
+    rotate(rotSpeed);
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
 
+    if(myCenterX >width)
+    {     
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 0;    
+    }   
+    else if (myCenterY < 0)
+    {     
+      myCenterY = height;    
+    }   
+  }
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return (int)myCenterX;}
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int)myCenterY;}
+  public void setDirectionX(double x) {myDirectionX = x;}
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
+  public void setrotSpeed(int x) {rotSpeed = x;}
+  public int getrotSpeed() {return rotSpeed;}
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
@@ -154,7 +226,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     //Fixes bug where ship goes to fast
     if(myDirectionX >= 500 || myDirectionY >= 500)
     {
-      myDirectionX = 5;;
+      myDirectionX = 5;
       myDirectionY = 5;
       myCenterX = 250;
       myCenterY = 250;
@@ -194,5 +266,4 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     }   
     endShape(CLOSE);  
   }   
-} 
-
+}
