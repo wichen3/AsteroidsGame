@@ -5,16 +5,15 @@ boolean isAccel = false;
 boolean isRotatingLeft = false;
 boolean isRotatingRight = false;
 boolean isHyperSpace = false;
-Asteroid [] rocks;
+ArrayList<Asteroid> rocks = new ArrayList<Asteroid>();
 public void setup() 
 {
   size(500, 500);
   bob = new SpaceShip();
   bling = new stars();
-  rocks = new Asteroid[7];
-  for(int i = 0; i < rocks.length; i++)
+  for(int i = 0; i < 10; i++)
   {
-    rocks[i] = new Asteroid();
+    rocks.add(new Asteroid());
   }
 }
 public void draw() 
@@ -22,6 +21,7 @@ public void draw()
   background(0);
   bling.show();
   bob.move();
+  rocks.show();
   if(isHyperSpace == false) {bob.show();}
   if(isAccel == true) {
     bob.accelerate(0.07);
@@ -36,11 +36,6 @@ public void draw()
     bob.setDirectionX(0);
     bob.setDirectionY(0);
   }
-  for(int nI = 0; nI < rocks.length; nI++)
-  {
-    rocks[nI].show();
-    rocks[nI].move();
-  }
 }
 public void keyPressed()
 {
@@ -52,7 +47,8 @@ public void keyPressed()
 }
 public void keyReleased()
 {
-  if(key == 'w') {isAccel = false;}
+  if(key == 'w') {isAccel = false;
+  }
   if(key == 'a') {isRotatingLeft = false;}
   if(key == 'd') {isRotatingRight = false;}
   if(key == 'e') {isHyperSpace = false;}
