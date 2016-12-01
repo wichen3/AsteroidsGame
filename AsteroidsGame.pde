@@ -21,7 +21,11 @@ public void draw()
   background(0);
   bling.show();
   bob.move();
-  rocks.show();
+  for(int i = 0; i < rocks.size(); i++)
+  {
+    rocks.get(i).show();
+    rocks.get(i).move();
+  }
   if(isHyperSpace == false) {bob.show();}
   if(isAccel == true) {
     bob.accelerate(0.07);
@@ -47,8 +51,7 @@ public void keyPressed()
 }
 public void keyReleased()
 {
-  if(key == 'w') {isAccel = false;
-  }
+  if(key == 'w') {isAccel = false;}
   if(key == 'a') {isRotatingLeft = false;}
   if(key == 'd') {isRotatingRight = false;}
   if(key == 'e') {isHyperSpace = false;}
@@ -119,6 +122,7 @@ class SpaceShip extends Floater
 class Asteroid extends Floater
 {
   protected int rotSpeed;
+  protected int rocksIndex;
   public Asteroid()
   {
     corners = 6;
@@ -145,26 +149,33 @@ class Asteroid extends Floater
   }
   public void move()
   {
-    rotate(rotSpeed);
-    myCenterX += myDirectionX;    
-    myCenterY += myDirectionY;     
+    for(int i = 0; i < rocks.size(); i++)
+    {
+      if(dist((float)rocks.get(i).getX(), (float)rocks.get(i).getY(), (float)bob.getX(), (float)bob.getY()) <= 20)
+      {
+        rocks.remove(i);
+      }
+    } 
+      rotate(rotSpeed);
+      myCenterX += myDirectionX;    
+      myCenterY += myDirectionY;     
 
-    if(myCenterX >width)
-    {     
-      myCenterX = 0;    
-    }    
-    else if (myCenterX<0)
-    {     
-      myCenterX = width;    
-    }    
-    if(myCenterY >height)
-    {    
-      myCenterY = 0;    
-    }   
-    else if (myCenterY < 0)
-    {     
-      myCenterY = height;    
-    }   
+      if(myCenterX >width)
+      {     
+        myCenterX = 0;    
+      }    
+      else if (myCenterX<0)
+      {     
+        myCenterX = width;    
+      }    
+      if(myCenterY >height)
+      {    
+        myCenterY = 0;    
+      }
+      else if (myCenterY < 0)
+      {     
+        myCenterY = height;    
+      }   
   }
   public void setX(int x) {myCenterX = x;}
   public int getX() {return (int)myCenterX;}
