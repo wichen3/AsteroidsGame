@@ -46,9 +46,6 @@ public void draw()
     bob.setDirectionY(0);
   }
   if(isShooting == true) {bullets.add(new Bullet(bob));}
-  text((int)bob.getDirectionX(), (float)475, (float)20);
-  text((int)bob.getDirectionY(), (float)475, (float)30);
-  System.out.println(bullets);
 }
 public void keyPressed()
 {
