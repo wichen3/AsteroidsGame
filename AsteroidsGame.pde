@@ -5,13 +5,15 @@ boolean isAccel = false;
 boolean isRotatingLeft = false;
 boolean isRotatingRight = false;
 boolean isHyperSpace = false;
+boolean isShooting = false;
 ArrayList<Asteroid> rocks = new ArrayList<Asteroid>();
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 public void setup() 
 {
   size(500, 500);
   bob = new SpaceShip();
   bling = new stars();
-  for(int i = 0; i < 10; i++)
+  for(int i = 0; i < 20; i++)
   {
     rocks.add(new Asteroid());
   }
@@ -26,10 +28,13 @@ public void draw()
     rocks.get(i).show();
     rocks.get(i).move();
   }
-  if(isHyperSpace == false) {bob.show();}
-  if(isAccel == true) {
-    bob.accelerate(0.07);
+  for(int nI = 0; nI < bullets.size(); nI++)
+  {
+    bullets.get(nI).show();
+    bullets.get(nI).move();
   }
+  if(isHyperSpace == false) {bob.show();}
+  if(isAccel == true) {bob.accelerate(0.07);}
   if(isRotatingLeft == true) {bob.rotate(-5);}
   if(isRotatingRight == true) {bob.rotate(5);}
   if(isHyperSpace == true)
@@ -40,6 +45,10 @@ public void draw()
     bob.setDirectionX(0);
     bob.setDirectionY(0);
   }
+  if(isShooting == true) {bullets.add(new Bullet(bob));}
+  text((int)bob.getDirectionX(), (float)475, (float)20);
+  text((int)bob.getDirectionY(), (float)475, (float)30);
+  System.out.println(bullets);
 }
 public void keyPressed()
 {
@@ -47,6 +56,7 @@ public void keyPressed()
   if(key == 'a') {isRotatingLeft = true;}
   if(key == 'd') {isRotatingRight = true;}
   if(key == 'e') {isHyperSpace = true;}
+  if(key == 32) {isShooting = true;}
 
 }
 public void keyReleased()
@@ -55,6 +65,7 @@ public void keyReleased()
   if(key == 'a') {isRotatingLeft = false;}
   if(key == 'd') {isRotatingRight = false;}
   if(key == 'e') {isHyperSpace = false;}
+  if(key== 32) {isShooting = false;}
 }
 public class stars
 {
@@ -230,11 +241,11 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;     
 
-    //Fixes bug where ship goes to fast
-    if(myDirectionX >= 500 || myDirectionY >= 500)
+    //Fixes bug where ship goes to fast, sets speed limit
+    if(myDirectionX >= 30 || myDirectionX <= -30 || myDirectionY >= 30 || myDirectionY <= -30)
     {
-      myDirectionX = 5;
-      myDirectionY = 5;
+      myDirectionX = 0;
+      myDirectionY = 0;
       myCenterX = 250;
       myCenterY = 250;
     }
